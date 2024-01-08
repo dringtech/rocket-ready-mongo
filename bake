@@ -1,0 +1,10 @@
+#!/bin/bash
+
+MONGO_VERSION=4.4.4
+
+docker build -t dringtech/rocket-ready-mongo:${MONGO_VERSION} server
+docker push dringtech/rocket-ready-mongo:${MONGO_VERSION}
+
+docker build -t dringtech/rocket-ready-mongo:${MONGO_VERSION}-setup setup
+docker push dringtech/rocket-ready-mongo:${MONGO_VERSION}-setup
+
