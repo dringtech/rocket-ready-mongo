@@ -1,4 +1,5 @@
-FROM mongo:4.4.4
+ARG MONGO_VERSION=4.4.4
+FROM mongo:${MONGO_VERSION}
 
 WORKDIR /opt/rrm
 COPY setup.sh .

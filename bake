@@ -1,10 +1,16 @@
 #!/bin/bash
+ENV_FILE=./.env
 
-MONGO_VERSION=4.4.4
+[ -f $ENV_FILE ] && . $ENV_FILE
 
-docker build -t dringtech/rocket-ready-mongo:${MONGO_VERSION} server
-docker push dringtech/rocket-ready-mongo:${MONGO_VERSION}
+[ -z $MONGO_VERSION ] && echo Please set a MONGO_VERSION environment variable && exit
+[ -z $DOCKER_HUB_ORG ] && echo Please set a DOCKER_HUB_ORG environment variable && exit
 
-docker build -t dringtech/rocket-ready-mongo:${MONGO_VERSION}-setup setup
-docker push dringtech/rocket-ready-mongo:${MONGO_VERSION}-setup
+docker_tag=${DOCKER_HUB_ORG}/rocket-ready-mongo:${MONGO_VERSION}
+
+docker build --build-arg="MONGO_VERSION=${MONGO_VERSION}" --tag ${docker_tag} server
+docker push ${docker_tag}
+
+docker build --build-arg="MONGO_VERSION=${MONGO_VERSION}" --tag ${docker_tag}-setup setup
+docker push ${docker_tag}-setup
 

@@ -2,18 +2,18 @@ version: '3.8'
 
 services:
   rocketchat:
-    image: rocket-chat:latest
+    image: rocketchat/rocket.chat:6.5.0
     environment:
       - ROOT_URL=http://localhost:3000
-      - MONGO_URL=mongodb://mongo:27017/rocketchat?replSet=rs01
-      - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replSet=rs01
+      - MONGO_URL=mongodb://mongo:27017/rocketchat?replicaSet=rs01
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local?replicaSet=rs01
     depends_on:
       - mongo
     ports:
       - 3000:3000
 
   mongo:
-    image: dringtech/rocket-ready-mongo:4.4.4
+    image: dringtech/rocket-ready-mongo:6.0.12
     restart: unless-stopped
     volumes:
      - ./data/db:/data/db
@@ -21,7 +21,7 @@ services:
       - 27017:27017
 
   mongosetup:
-    image: dringtech/rocket-ready-mongo:4.4.4-setup
+    image: dringtech/rocket-ready-mongo:6.0.12-setup
     environment:
       - REPLICA_SET_NAME=rs01
       - REPLICA_SET_HOST=mongo:27017
